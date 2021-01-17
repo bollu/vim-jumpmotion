@@ -91,9 +91,19 @@ if !exists('*JumpMotionKey')
     let str = ''
 
     while nth >=# 0
-      let str = alphabet[nth % strlen(alphabet)] . str
-      let nth = nth / strlen(alphabet) - 1
+      let str = alphabet[1 + (nth % (strlen(alphabet)-1))] . str
+      let nth = nth / (strlen(alphabet) -1) - 1
     endwhile
+
+    let curlen = strlen(str)
+    while curlen <# 3
+      let str = alphabet[0] . str
+      let curlen = curlen + 1
+    endwhile
+    " let str = 'xx' . str
+    "while strlen(str) <# 3
+    " let str = 'a' . str
+    " endwhile
 
     return [str, str]
   endfunction
@@ -321,13 +331,13 @@ function JumpMotion(...) abort range
       call filter(targets, {_, target-> target.key[0][0] ==# chr})
       for target in targets
         let target.key[0] = target.key[0][1:]
-        if target.key[0] ==# ''
-          let target.key[0] = ' '
-        endif
-        let target.key[1] = target.key[1][1:]
-        if target.key[1] ==# ''
-          let target.key[1] = ' '
-        endif
+      "  if target.key[0] ==# ''
+      "    let target.key[0] = ' '
+      "  endif
+      "  let target.key[1] = target.key[1][1:]
+      "  if target.key[1] ==# ''
+      "    let target.key[1] = ' '
+      "  endif
       endfor
     endwhile
 
